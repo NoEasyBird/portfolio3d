@@ -21,6 +21,8 @@ namespace UI
 
         private bool isDialog;
 
+        private Action onFinish;
+
         public override void SetWindow(WindowNameType windowType)
         {
             base.SetWindow(windowType);
@@ -39,8 +41,9 @@ namespace UI
         {
         }
 
-        public void PlayDialog(int groupId)
+        public void PlayDialog(int groupId, Action onFinished = null)
         {
+            onFinish = onFinished;
             var dialogs = RawDataStore.Instance.GetDialogs(groupId);
             dialogs.Sort((a,b) => a.Index.CompareTo(b.Index));
             foreach (var dialog in dialogs)
@@ -78,6 +81,7 @@ namespace UI
         private void FinishDialog()
         {
             BackWindow();
+            onFinish?.Invoke();
         }
 
         private void OnClick_SkipButton()

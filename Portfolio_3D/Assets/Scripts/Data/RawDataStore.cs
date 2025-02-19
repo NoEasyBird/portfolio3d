@@ -10,7 +10,9 @@ namespace Data
         
         private List<RawOpenContents> openContents = new List<RawOpenContents>();
 
-        private List<RawDialog> dialogs = new List<RawDialog>();
+        private Dictionary<int, List<RawDialog>> dialogDic = new ();
+        
+        private Dictionary<int, List<RawScenarioData>> scenarioDic = new ();
         
         protected override void Init()
         {
@@ -21,7 +23,21 @@ namespace Data
         public void LoadData()
         {
             openContents = LoadData<RawOpenContents>("OpenContents");
-            dialogs = LoadData<RawDialog>("Dialog");
+            
+            var dialogList = LoadData<RawDialog>("Dialog");
+            dialogList.ForEach(x => AddDictionaryData(dialogDic, x.GroupId, x));
+            
+            var scenarioList = LoadData<RawScenarioData>("Scenario");
+            scenarioList.ForEach(x => AddDictionaryData(scenarioDic, x.GroupId, x));
+        }
+
+        private void AddDictionaryData<T, K>(Dictionary<T,List<K>> dictionary, T key, K value)
+        {
+            if (!dictionary.ContainsKey(key))
+            {
+                dictionary.Add(key, new List<K>());
+            }
+            dictionary[key].Add(value);
         }
 
         private List<T> LoadData<T>(string dataResourceName)
@@ -37,7 +53,12 @@ namespace Data
 
         public List<RawDialog> GetDialogs(int groupId)
         {
-            return dialogs.FindAll(x => x.GroupId == groupId);
+            return dialogDic[groupId];
+        }
+
+        public List<RawScenarioData> GetScenarioData(int groupId)
+        {
+            return scenarioDic[groupId];
         }
     }
 }

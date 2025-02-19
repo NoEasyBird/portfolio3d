@@ -29,14 +29,14 @@ namespace Utility
             windowManager.BackWindow();
         }
 
-        public void PlayDialog(int groupIndex)
+        public void PlayDialog(int groupIndex, Action onFinished = null)
         {
             windowManager.OpenWindow(WindowNameType.UIDialogWindow);
             
             var window = windowManager.GetWindow<UIDialogWindow>(WindowNameType.UIDialogWindow);
             if (window != null)
             {
-                window.PlayDialog(groupIndex);
+                window.PlayDialog(groupIndex, onFinished);
             }
         }
     }

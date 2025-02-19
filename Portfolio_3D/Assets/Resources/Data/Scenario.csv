@@ -1,0 +1,4 @@
+﻿GroupId,Id,NextType,EventType,Arg1,Arg2
+1,1,Next,FadeIn,TRUE,1
+1,2,None,Dialog,1,
+1,3,None,GetItem,1,
