@@ -2,16 +2,16 @@ namespace Data
 {
     public class RawDialog
     {
-        private int id;
+        private int groupId;
 
         private int index;
 
         private string content;
 
-        public int Id
+        public int GroupId
         {
-            get => id;
-            set => id = value;
+            get => groupId;
+            set => groupId = value;
         }
 
         public int Index

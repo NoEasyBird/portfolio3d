@@ -1,3 +1,4 @@
+using System;
 using UI;
 
 namespace Utility
@@ -6,23 +7,19 @@ namespace Utility
     {
         private WindowManager windowManager = new WindowManager();
 
-        public void StartFade(bool fadeIn, float fadeTime = 1f)
+        public void StartFade(bool fadeIn, float fadeTime = 1f, Action onFinished = null)
         {
-            if (windowManager.IsOpenWindow(WindowNameType.UIFadeWindow))
-            {
-                windowManager.OpenWindow(WindowNameType.UIFadeWindow);
-            }
-
+            windowManager.OpenWindow(WindowNameType.UIFadeWindow);
             var window = windowManager.GetWindow<UIFadeWindow>(WindowNameType.UIFadeWindow);
             if (window != null)
             {
                 if (fadeIn)
                 {
-                    window.FadeIn(fadeTime);
+                    window.FadeIn(fadeTime, onFinished);
                 }
                 else
                 {
-                    window.FadeOut(fadeTime);
+                    window.FadeOut(fadeTime, onFinished);
                 }
             }
         }
@@ -30,6 +27,17 @@ namespace Utility
         public void BackWindow()
         {
             windowManager.BackWindow();
+        }
+
+        public void PlayDialog(int groupIndex)
+        {
+            windowManager.OpenWindow(WindowNameType.UIDialogWindow);
+            
+            var window = windowManager.GetWindow<UIDialogWindow>(WindowNameType.UIDialogWindow);
+            if (window != null)
+            {
+                window.PlayDialog(groupIndex);
+            }
         }
     }
 }

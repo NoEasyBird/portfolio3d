@@ -28,7 +28,6 @@ namespace Utility
             if (!loadedWindow.ContainsKey(windowNameType))
             {
                 windowBase = LoadWindow(windowNameType);
-                loadedWindow.Add(windowNameType, windowBase);
             }
             else
             {
@@ -52,7 +51,13 @@ namespace Utility
 
         public void BackWindow()
         {
-            
+            if (openedWindow.Count <= 0)
+            {
+                return;
+            }
+
+            var window = openedWindow.Pop();
+            window.CloseWindow();
         }
 
         private UIWindowBase LoadWindow(WindowNameType windowNameType)
@@ -66,6 +71,7 @@ namespace Utility
             }
 
             window.SetWindow(windowNameType);
+            window.gameObject.SetActiveSafely(false);
             loadedWindow.Add(windowNameType, window);
             return window;
         }

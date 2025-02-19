@@ -17,9 +17,13 @@ namespace InGame
 
             if (spaceMat == null)
             {
-                spaceMat = "Material/Space.mat".LoadAsset<Material>();
+                spaceMat = "Material/SpaceSkyBox".LoadAsset<Material>();
             }
-            RenderSettings.skybox = spaceMat;
+
+            if (spaceMat != null)
+            {
+                RenderSettings.skybox = spaceMat;
+            }
             
             spaceEffect.Play(true);
             makeAsset.Stop(true);

@@ -26,19 +26,18 @@ namespace Data
 
         private List<T> LoadData<T>(string dataResourceName)
         {
-            string path = string.Format("{0}{1}.csv", resourcePath, dataResourceName);
-            var textAsset = path.LoadAsset<TextAsset>();
-            if (textAsset == null)
-            {
-                return new List<T>();
-            }
-
-            return CSVManager.LoadTextAsset<T>(textAsset.text);
+            string path = string.Format("{0}{1}", resourcePath, dataResourceName);
+            return CSVManager.LoadTextAsset<T>(path);
         }
 
         public List<RawOpenContents> GetOpenContents(ContentsType contentsType)
         {
             return openContents.FindAll(x => x.GetContentsType() == contentsType);
+        }
+
+        public List<RawDialog> GetDialogs(int groupId)
+        {
+            return dialogs.FindAll(x => x.GroupId == groupId);
         }
     }
 }

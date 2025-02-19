@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,25 +25,25 @@ namespace UI
             StopAllCoroutines();
         }
 
-        public void FadeIn(float time = 1f)
+        public void FadeIn(float time = 1f, Action onFinished = null)
         {
             if (fadeCrt != null)
             {
                 StopCoroutine(fadeCrt);
             }
-            fadeCrt = StartCoroutine(FadeCoroutine(true, time));
+            fadeCrt = StartCoroutine(FadeCoroutine(true, time, onFinished));
         }
 
-        public void FadeOut(float time = 1f)
+        public void FadeOut(float time = 1f, Action onFinished = null)
         {
             if (fadeCrt != null)
             {
                 StopCoroutine(fadeCrt);
             }
-            fadeCrt = StartCoroutine(FadeCoroutine(false, time));
+            fadeCrt = StartCoroutine(FadeCoroutine(false, time, onFinished));
         }
 
-        private IEnumerator FadeCoroutine(bool fadeIn, float targetTime = 1f)
+        private IEnumerator FadeCoroutine(bool fadeIn, float targetTime = 1f, Action onFinished = null)
         {
             float startAlpha = black.color.a;
             float targetAlpha = fadeIn ? 1f : 0f;
@@ -61,12 +62,13 @@ namespace UI
             var color = black.color;
             color.a = fadeIn ? 1f : 0f;
             black.color = color;
-            fadeCrt = null;
 
             if (fadeIn == false)
             {
                 BackWindow();
             }
+            onFinished?.Invoke();
+            fadeCrt = null;
         }
     }
 }

@@ -20,7 +20,10 @@ namespace Utility
         {
             LoadBackGround();
             LoadPlayer();
-            UIController.Instance.StartFade(false, 2f);
+            UIController.Instance.StartFade(false, 2f, () =>
+            {
+                UIController.Instance.PlayDialog(1);
+            });
         }
 
         private void LoadPlayer()

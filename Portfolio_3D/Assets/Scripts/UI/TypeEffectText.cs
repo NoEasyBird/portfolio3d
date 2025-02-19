@@ -25,6 +25,8 @@ namespace UI
 
         private Coroutine textCrt;
 
+        public Action onFinished;
+
         private void StartTypeWriter()
         {
             if (textCrt != null)
@@ -44,6 +46,16 @@ namespace UI
             }
 
             textCrt = null;
+            onFinished?.Invoke();
+        }
+
+        public void SetForceText(string str)
+        {
+            if (textCrt != null)
+            {
+                StopCoroutine(textCrt);
+            }
+            base.text = str;
         }
     }
 }

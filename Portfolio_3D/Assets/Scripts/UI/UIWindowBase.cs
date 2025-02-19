@@ -29,6 +29,7 @@ namespace UI
         
         public virtual void OpenWindow()
         {
+            gameObject.SetActiveSafely(true);
             isOpened = true;
         }
 
@@ -39,8 +40,13 @@ namespace UI
 
         public virtual void BackWindow()
         {
-            isOpened = false;
             UIController.Instance.BackWindow();
+        }
+
+        public virtual void CloseWindow()
+        {
+            isOpened = false;
+            gameObject.SetActiveSafely(false);
         }
     }
 }
