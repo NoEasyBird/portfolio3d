@@ -13,12 +13,14 @@ namespace Utility
         {
             RawDataStore.Instance.LoadData();
             ClientSaveDataStore.Instance.LoadData();
+            UIController.Instance.StartFade(true, 0f);
         }
 
         private void Start()
         {
             LoadBackGround();
             LoadPlayer();
+            UIController.Instance.StartFade(false, 2f);
         }
 
         private void LoadPlayer()

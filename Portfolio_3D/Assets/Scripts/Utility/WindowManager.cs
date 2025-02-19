@@ -12,7 +12,17 @@ namespace Utility
 
         private Dictionary<WindowNameType, UIWindowBase> loadedWindow = new ();
 
-        private void OpenWindow<T>(WindowNameType windowNameType) where T : UIWindowBase
+        public T GetWindow<T>(WindowNameType windowNameType) where T : UIWindowBase
+        {
+            if (!loadedWindow.ContainsKey(windowNameType))
+            {
+                LoadWindow(windowNameType);
+            }
+
+            return loadedWindow[windowNameType] as T;
+        }
+
+        public void OpenWindow(WindowNameType windowNameType)
         {
             UIWindowBase windowBase = null;
             if (!loadedWindow.ContainsKey(windowNameType))
@@ -40,7 +50,7 @@ namespace Utility
             windowBase.OpenWindow();
         }
 
-        private void BackWindow()
+        public void BackWindow()
         {
             
         }
@@ -48,7 +58,26 @@ namespace Utility
         private UIWindowBase LoadWindow(WindowNameType windowNameType)
         {
             string path = string.Format(windowPath, windowNameType.ToString());
-            return path.LoadPrefab<UIWindowBase>();
+            var window = path.LoadPrefab<UIWindowBase>(UIController.Instance.transform);
+            if (window == null)
+            {
+                Debug.LogError("Window Is Null : " + windowNameType);
+                return null;
+            }
+
+            window.SetWindow(windowNameType);
+            loadedWindow.Add(windowNameType, window);
+            return window;
+        }
+
+        public bool IsOpenWindow(WindowNameType windowNameType)
+        {
+            if (!loadedWindow.ContainsKey(windowNameType))
+            {
+                return false;
+            }
+
+            return loadedWindow[windowNameType].IsOpened;
         }
     }
 }

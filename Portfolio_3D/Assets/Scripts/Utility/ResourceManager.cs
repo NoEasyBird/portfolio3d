@@ -13,7 +13,7 @@ namespace Utility
             return Resources.Load<T>(path);
         }
 
-        public static T LoadPrefab<T>(this string path) where T : Component
+        public static T LoadPrefab<T>(this string path, Transform parent = null) where T : Component
         {
             var obj = Resources.Load<Object>(path);
             if (obj == null)
@@ -21,7 +21,7 @@ namespace Utility
                 return null;
             }
 
-            var gameObj = Object.Instantiate(obj) as GameObject;
+            var gameObj = Object.Instantiate(obj, parent) as GameObject;
             if (gameObj == null)
             {
                 return null;

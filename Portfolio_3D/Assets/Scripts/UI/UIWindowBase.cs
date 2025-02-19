@@ -6,6 +6,7 @@ namespace UI
     public enum WindowNameType
     {
         UIDialogWindow,
+        UIFadeWindow,
     }
     
     public class UIWindowBase : MonoBehaviour
@@ -14,6 +15,8 @@ namespace UI
 
         private WindowNameType windowNameType;
 
+        private RectTransform rectTransform;
+
         public bool IsOpened => isOpened;
 
         public WindowNameType WindowNameType => windowNameType;
@@ -21,6 +24,7 @@ namespace UI
         public virtual void SetWindow(WindowNameType windowType)
         {
             windowNameType = windowType;
+            rectTransform = GetComponent<RectTransform>();
         }
         
         public virtual void OpenWindow()
@@ -36,6 +40,7 @@ namespace UI
         public virtual void BackWindow()
         {
             isOpened = false;
+            UIController.Instance.BackWindow();
         }
     }
 }

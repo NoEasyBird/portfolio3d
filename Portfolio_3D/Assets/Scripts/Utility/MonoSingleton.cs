@@ -11,7 +11,7 @@ namespace Utility
             {
                 if (instance == null)
                 {
-                    instance = typeof(T).GetPath().LoadAsset<T>();
+                    instance = typeof(T).GetPath().LoadPrefab<T>();
                 }
 
                 return instance;
