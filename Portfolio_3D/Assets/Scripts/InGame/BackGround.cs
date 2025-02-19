@@ -16,6 +16,12 @@ namespace InGame
 
         public virtual void Init()
         {
+            gameObject.SetActiveSafely(true);
+        }
+
+        public virtual void Hide()
+        {
+            gameObject.SetActiveSafely(false);
         }
     }
 }

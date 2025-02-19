@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Utility;
 
@@ -31,23 +32,9 @@ namespace InGame
             playerAnim.SetAnimator(GetComponent<Animator>());
         }
 
-        protected override void Update()
+        public void SetAnimation(AnimationTrigger trigger)
         {
-            if (!isInit)
-            {
-                return;
-            }
-            base.Update();
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                playerAnim.AttackAnim();
-            }
-
-            if (Input.GetMouseButtonDown(1))
-            {
-                playerAnim.SpinningAnim();
-            }
+            playerAnim.SetAnimation(trigger);
         }
     }
 }

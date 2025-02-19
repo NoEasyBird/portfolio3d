@@ -1,24 +1,44 @@
+using System.Collections.Generic;
 using Data;
+using InGame;
 using UnityEngine;
 
 namespace Utility
 {
     public class GameManager : MonoBehaviour
     {
+        private Dictionary<BackGroundType, BackGround> backGrounds = new ();
+        
         private void Awake()
         {
             RawDataStore.Instance.LoadData();
             ClientSaveDataStore.Instance.LoadData();
         }
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-            
+            LoadBackGround();
+            LoadPlayer();
         }
 
-        private void CheckSpaceBackGround()
+        private void LoadPlayer()
         {
+            var player = "Object/Player/Player".LoadPrefab<Player>();
+            if (player != null)
+            {
+                player.transform.position = Vector3.zero;
+                player.Init();
+                player.SetAnimation(AnimationTrigger.Air);
+            }
+        }
+
+        private void LoadBackGround()
+        {
+            foreach (var backGroundType in backGrounds.Keys)
+            {
+                backGrounds[backGroundType].Hide();
+            }
+            
             var spaceContents = RawDataStore.Instance.GetOpenContents(ContentsType.SpaceDialog);
             if (spaceContents.TrueForAll(x => ClientSaveDataStore.Instance.IsOpenContents(x.Index)))
             {
@@ -26,8 +46,13 @@ namespace Utility
             }
             else
             {
-                //Space 공간 로드
-                
+                //Space 공간 
+                if (!backGrounds.ContainsKey(BackGroundType.Space))
+                {
+                    var spaceBackGround = "Object/BackGround/Space".LoadPrefab<BackGround>();
+                    backGrounds.Add(BackGroundType.Space, spaceBackGround);
+                }
+                backGrounds[BackGroundType.Space].Init();
             }
         }
     }

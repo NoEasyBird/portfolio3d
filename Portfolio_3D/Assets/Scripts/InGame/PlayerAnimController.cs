@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace InGame
 {
@@ -10,6 +12,7 @@ namespace InGame
         Attack_03 = 3,
         Spinning = 11,
         Running = 12,
+        Air = 13,
     }
     
     public class PlayerAnimController
@@ -31,22 +34,19 @@ namespace InGame
             animator.SetTrigger(((AnimationTrigger) randomAnim).ToString());
         }
 
-        public void RunAnim()
+        public void SetAnimation(AnimationTrigger trigger)
         {
-            if (animator == null)
+            switch (trigger)
             {
-                return;
+                case AnimationTrigger.Attack_01:
+                case AnimationTrigger.Attack_02:
+                case AnimationTrigger.Attack_03:
+                    AttackAnim();
+                    break;
+                default:
+                    animator.SetTrigger(trigger.ToString());
+                    break;
             }
-            animator.SetTrigger(AnimationTrigger.Running.ToString());
-        }
-
-        public void SpinningAnim()
-        {
-            if (animator == null)
-            {
-                return;
-            }
-            animator.SetTrigger(AnimationTrigger.Spinning.ToString());
         }
     }
 }

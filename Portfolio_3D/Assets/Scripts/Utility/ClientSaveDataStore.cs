@@ -8,6 +8,7 @@ namespace Utility
     public enum PrefsName
     {
         OpenContents,
+        PlayerPos,
     }
     
     public class ClientSaveDataStore : Singleton<ClientSaveDataStore>

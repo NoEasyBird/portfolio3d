@@ -15,13 +15,19 @@ namespace Utility
 
         public static T LoadPrefab<T>(this string path) where T : Component
         {
-            var obj = Resources.Load<Object>(path) as GameObject;
+            var obj = Resources.Load<Object>(path);
             if (obj == null)
             {
                 return null;
             }
 
-            return obj.GetComponent<T>();
+            var gameObj = Object.Instantiate(obj) as GameObject;
+            if (gameObj == null)
+            {
+                return null;
+            }
+
+            return gameObj.GetComponent<T>();
         }
 
         public static string GetPath(this Type type)
