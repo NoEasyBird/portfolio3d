@@ -9,21 +9,17 @@ namespace Utility
     {
         private Dictionary<BackGroundType, BackGround> backGrounds = new ();
         
-        private void Awake()
+        protected void Awake()
         {
-            RawDataStore.Instance.LoadData();
-            ClientSaveDataStore.Instance.LoadData();
             UIController.Instance.StartFade(true, 0f);
         }
 
-        private void Start()
+        protected void Start()
         {
             LoadBackGround();
             LoadPlayer();
-            UIController.Instance.StartFade(false, 2f, () =>
-            {
-                UIController.Instance.PlayDialog(1);
-            });
+            
+            UIController.Instance.CheckAndPlayTutorial();
         }
 
         private void LoadPlayer()
@@ -33,7 +29,7 @@ namespace Utility
             {
                 player.transform.position = Vector3.zero;
                 player.Init();
-                player.SetAnimation(AnimationTrigger.Air);
+                PlayerController.Instance.SetMainPlayer(player);
             }
         }
 

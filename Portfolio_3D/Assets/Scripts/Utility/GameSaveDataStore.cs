@@ -5,11 +5,6 @@ using UnityEngine;
 
 namespace Utility
 {
-    public enum SaveDataName
-    {
-        Scenario,
-    }
-    
     public class GameSaveDataStore : Singleton<GameSaveDataStore>
     {
         private readonly string basicPath = Application.persistentDataPath;
@@ -18,11 +13,17 @@ namespace Utility
         
         public ScenarioSaveData ScenarioSaveData => scenarioSaveData;
 
+        private TutorialSaveData tutorialData = new TutorialSaveData();
+
+        public TutorialSaveData TutorialData => tutorialData;
+
         protected override void Init()
         {
             base.Init();
             scenarioSaveData = Load<ScenarioSaveData>();
             scenarioSaveData.ApplyData();
+            tutorialData = Load<TutorialSaveData>();
+            tutorialData.ApplyData();
         }
 
         private T Load<T>() where T : SaveDataBase, new()

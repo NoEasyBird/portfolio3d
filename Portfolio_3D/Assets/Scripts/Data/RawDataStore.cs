@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
@@ -7,12 +8,16 @@ namespace Data
     public class RawDataStore : Singleton<RawDataStore>
     {
         private readonly string resourcePath = "Data/";
+
+        private bool isLoad;
         
         private List<RawOpenContents> openContents = new List<RawOpenContents>();
 
         private Dictionary<int, List<RawDialog>> dialogDic = new ();
         
         private Dictionary<int, List<RawScenarioData>> scenarioDic = new ();
+        
+        private Dictionary<int, RawTutorialData> tutorialData = new ();
         
         protected override void Init()
         {
@@ -22,6 +27,10 @@ namespace Data
 
         public void LoadData()
         {
+            if (isLoad)
+            {
+                return;
+            }
             openContents = LoadData<RawOpenContents>("OpenContents");
             
             var dialogList = LoadData<RawDialog>("Dialog");
@@ -29,6 +38,11 @@ namespace Data
             
             var scenarioList = LoadData<RawScenarioData>("Scenario");
             scenarioList.ForEach(x => AddDictionaryData(scenarioDic, x.GroupId, x));
+            
+            var tutorialList = LoadData<RawTutorialData>("Tutorial");
+            tutorialList.ForEach(x => tutorialData.Add(x.Id, x));
+            
+            isLoad = true;
         }
 
         private void AddDictionaryData<T, K>(Dictionary<T,List<K>> dictionary, T key, K value)
@@ -59,6 +73,36 @@ namespace Data
         public List<RawScenarioData> GetScenarioData(int groupId)
         {
             return scenarioDic[groupId];
+        }
+
+        public RawTutorialData GetTutorialData(int index)
+        {
+            return tutorialData[index];
+        }
+
+        public RawTutorialData CanTutorialData()
+        {
+            var tutorialSaveData = GameSaveDataStore.Instance.TutorialData;
+            foreach (var rawTutorialData in tutorialData.Values)
+            {
+                if (tutorialSaveData.ContainsKey(rawTutorialData.Id))
+                {
+                    continue;
+                }
+
+                switch (rawTutorialData.GetCondition())
+                {
+                    case TutorialCondition.Scenario:
+                        int scenarioIndex = Convert.ToInt32(rawTutorialData.Arg1);
+                        if (!GameSaveDataStore.Instance.ScenarioSaveData.ContainsKey(scenarioIndex))
+                        {
+                            return rawTutorialData;
+                        }
+                        break;
+                }
+            }
+
+            return null;
         }
     }
 }

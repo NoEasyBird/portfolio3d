@@ -14,6 +14,7 @@ namespace Data
         Fade,
         Dialog,
         GetItem,
+        PlayerAnim,
     }
     
     public class RawScenarioData

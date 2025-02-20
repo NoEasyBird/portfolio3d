@@ -1,4 +1,5 @@
 using System;
+using Data;
 using UI;
 
 namespace Utility
@@ -38,6 +39,27 @@ namespace Utility
             {
                 window.PlayDialog(groupIndex, onFinished);
             }
+        }
+
+        public void CheckAndPlayTutorial()
+        {
+            var nextTutorial = RawDataStore.Instance.CanTutorialData();
+            if (nextTutorial == null)
+            {
+                return;
+            }
+
+            switch (nextTutorial.GetCondition())
+            {
+                case TutorialCondition.Scenario:
+                    int scenarioIndex = Convert.ToInt32(nextTutorial.Arg1);
+                    ScenarioController.Instance.PlayScenario(scenarioIndex);
+                    break;
+                default:
+                    return;
+            }
+            
+            //GameSaveDataStore.Instance.ScenarioSaveData.AddIdSave(nextTutorial.Id);
         }
     }
 }

@@ -37,6 +37,11 @@ namespace Utility
                 return string.Format("{0}{1}/{2}", prefabPath, "UI", "UIController");
             }
 
+            if (type == typeof(GameManager))
+            {
+                return string.Format("{0}{1}", prefabPath, "GameManager");
+            }
+
             return "";
         }
     }

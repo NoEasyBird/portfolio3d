@@ -37,10 +37,6 @@ namespace UI
             base.BackWindow();
         }
 
-        private void OnDisable()
-        {
-        }
-
         public void PlayDialog(int groupId, Action onFinished = null)
         {
             onFinish = onFinished;
@@ -89,6 +85,7 @@ namespace UI
             if (isDialog)
             {
                 dialogText.SetForceText(currentDialog?.Content ?? "");
+                OnFinishedDialog();
             }
             else
             {

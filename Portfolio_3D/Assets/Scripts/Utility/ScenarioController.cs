@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Data;
+using InGame;
 
 namespace Utility
 {
@@ -36,15 +37,19 @@ namespace Utility
             switch (currentScenario.GetEventType())
             {
                 case ScenarioEventType.Fade:
-                    bool isFade = Convert.ToBoolean(currentScenario.Arg1);
+                    bool isFadeIn = Convert.ToBoolean(currentScenario.Arg1);
                     float fadeTime = Convert.ToSingle(currentScenario.Arg2);
-                    UIController.Instance.StartFade(isFade, fadeTime, isNext ? null : PlayInternal);
+                    UIController.Instance.StartFade(isFadeIn, fadeTime, isNext ? null : PlayInternal);
                     break;
                 case ScenarioEventType.Dialog:
                     int dialogGroupId = Convert.ToInt32(currentScenario.Arg1);
                     UIController.Instance.PlayDialog(dialogGroupId, isNext ? null : PlayInternal);
                     break;
                 case ScenarioEventType.GetItem:
+                    break;
+                case ScenarioEventType.PlayerAnim:
+                    AnimationTrigger animationTrigger = currentScenario.Arg1.ToEnum<AnimationTrigger>();
+                    PlayerController.Instance.MainPlayer.SetAnimation(animationTrigger);
                     break;
                 default:
                     PlayInternal();

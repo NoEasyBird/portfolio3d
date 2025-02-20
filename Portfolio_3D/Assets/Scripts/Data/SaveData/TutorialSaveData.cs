@@ -2,7 +2,7 @@ using Utility;
 
 namespace Data.SaveData
 {
-    public class ScenarioSaveData : ListIntSaveData
+    public class TutorialSaveData : ListIntSaveData
     {
         public override void Save()
         {
